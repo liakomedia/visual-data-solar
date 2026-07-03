@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"/>
+<meta name="theme-color" content="#05070e"/>
+<title>Visual Data Solar — Live 3D Map of the Solar System</title>
+<meta name="description" content="The Solar System as it is today — live planet positions from JPL ephemeris, all 459 catalogued moons, real surface imagery, 18,000 asteroids, comets, 15,932 satellites and Earth's planetary-defence watchlist."/>
+<link rel="canonical" href="https://vdata.liako.eu/solar/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Visual Data by Liako"/>
+<meta property="og:url" content="https://vdata.liako.eu/solar/"/>
+<meta property="og:title" content="Visual Data Solar — Live 3D Map of the Solar System"/>
+<meta property="og:description" content="Live planet positions, all 459 catalogued moons with real surface imagery, 18,000 asteroids, 15,932 satellites and Earth's planetary-defence watchlist."/>
+<meta property="og:image" content="https://vdata.liako.eu/og/solar.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="3D map of the Solar System — textured planets, asteroid belts and moon systems"/>
+<meta property="og:locale" content="en_US"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Visual Data Solar — Live 3D Map of the Solar System"/>
+<meta name="twitter:description" content="Live planet positions, 459 moons, 18,000 asteroids, 15,932 satellites and Earth's defence watchlist."/>
+<meta name="twitter:image" content="https://vdata.liako.eu/og/solar.jpg"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"WebApplication","@id":"https://vdata.liako.eu/solar/#app","name":"Visual Data Solar","url":"https://vdata.liako.eu/solar/","description":"Live interactive 3D map of the Solar System — planet positions computed from JPL ephemeris for today, all 459 catalogued moons, real NASA surface imagery, 18,000 asteroid orbits, comets, 15,932 active satellites, impact craters and the NASA/JPL planetary-defence datasets, each with its references.","applicationCategory":"EducationalApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript and WebGL","isAccessibleForFree":true,"inLanguage":"en","image":"https://vdata.liako.eu/og/solar.jpg","creator":{"@id":"https://liako.eu/#organization"},"publisher":{"@id":"https://liako.eu/#organization"},"isPartOf":{"@id":"https://vdata.liako.eu/#website"},"about":[{"@type":"Thing","name":"Solar System","sameAs":"https://en.wikipedia.org/wiki/Solar_System"},{"@type":"Thing","name":"Planetary science","sameAs":"https://en.wikipedia.org/wiki/Planetary_science"}]},
+ {"@type":"BreadcrumbList","@id":"https://vdata.liako.eu/solar/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Visual Data","item":"https://vdata.liako.eu/"},{"@type":"ListItem","position":2,"name":"Solar","item":"https://vdata.liako.eu/solar/"}]},
+ {"@type":"WebSite","@id":"https://vdata.liako.eu/#website","name":"Visual Data by Liako","url":"https://vdata.liako.eu/","publisher":{"@id":"https://liako.eu/#organization"}},
+ {"@type":"Organization","@id":"https://liako.eu/#organization","name":"Liako","url":"https://liako.eu/"}
+]}
+</script>
+<link rel="icon" href="/icons/liako-32x32.png" sizes="32x32"/>
+<link rel="icon" href="/icons/liako-192x192.png" sizes="192x192"/>
+<link rel="apple-touch-icon" href="/icons/liako-180x180.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="includes/css/style.css?v=3"/>
+</head>
+<body>
+<div id="graph"></div>
+<div id="loading">Charting the Solar System…</div>
+
+<header>
+  <div class="brand">
+    <h1>Visual Data <span class="d">Solar</span></h1>
+    <div class="sub">The Solar System as it is — the Sun, every planet, all 459 catalogued moons and 18,000 real asteroid orbits.</div>
+  </div>
+  <div id="controls">
+    <button id="bAll" title="Zoom back out to the whole system">Overview</button>
+    <button id="bFit" title="Frame the whole system">Fit view</button>
+    <button id="bReset" title="Return to the start view">Reset</button>
+    <button id="bTime" title="Clock rate — cycle: real time · 1 day/s · 1 month/s · 1 year/s. Same true JPL ephemeris at every speed.">⏱ Real time</button>
+  </div>
+  <div id="search"><input id="q" type="search" placeholder="Search a planet, moon, comet…" autocomplete="off"/></div>
+</header>
+<div id="crumbs"></div>
+
+<div id="panel">
+  <div class="close" id="pclose">×</div>
+  <div class="ph" id="pph"></div>
+  <div class="bd" id="pbd"></div>
+</div>
+
+<button id="legend-btn" title="Object types — show / hide">◈ Legend</button>
+<div id="legend"></div>
+<div id="hud"></div>
+<div id="cite">
+  <button id="cite-btn" title="Data sources & credits">✦ References</button>
+  <div id="cite-body" hidden>
+    <div class="cite-top">Compiled by <a href="https://liako.eu" target="_blank" rel="noopener"><b>Liako</b> — liako.eu ↗</a></div>
+    Moons — physical parameters &amp; orbits: <a href="https://ssd.jpl.nasa.gov/sats/phys_par/" target="_blank" rel="noopener">NASA/JPL Solar System Dynamics ↗</a><br/>
+    Asteroids &amp; comets: <a href="https://ssd.jpl.nasa.gov/tools/sbdb_query.html" target="_blank" rel="noopener">NASA/JPL Small-Body Database ↗</a><br/>
+    Earth defence — hazardous asteroids, <a href="https://cneos.jpl.nasa.gov/sentry/" target="_blank" rel="noopener">Sentry impact risk ↗</a>,
+    <a href="https://cneos.jpl.nasa.gov/ca/" target="_blank" rel="noopener">close approaches ↗</a> &amp;
+    <a href="https://cneos.jpl.nasa.gov/fireballs/" target="_blank" rel="noopener">fireballs ↗</a>: NASA/JPL CNEOS<br/>
+    Satellites: <a href="https://celestrak.org" target="_blank" rel="noopener">CelesTrak GP catalogue ↗</a> ·
+    Impact craters: <a href="https://en.wikipedia.org/wiki/List_of_impact_structures_on_Earth" target="_blank" rel="noopener">Earth Impact Database / Wikipedia ↗</a><br/>
+    Planet positions: <a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html" target="_blank" rel="noopener">JPL Approximate Ephemeris ↗</a> ·
+    Surface imagery: <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener">Solar System Scope (CC BY 4.0) ↗</a><br/>
+    Moon &amp; dwarf-planet mosaics: NASA/JPL/USGS — Voyager, Galileo, Cassini, New Horizons &amp; Dawn missions, via
+    <a href="https://github.com/Stellarium/stellarium/tree/master/textures" target="_blank" rel="noopener">Stellarium ↗</a><br/>
+    Planetary data: <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener">NASA NSSDCA Planetary Fact Sheets ↗</a>
+  </div>
+</div>
+
+<script src="https://unpkg.com/3d-force-graph@1.80.0"></script>
+<script>if(typeof ForceGraph3D==='undefined'){document.write('<script src="https://cdn.jsdelivr.net/npm/3d-force-graph@1.80.0"><\/script>');}</script>
+<!-- global THREE must match the revision bundled inside 3d-force-graph (r183) — a version
+     mismatch makes textures upload but sample BLACK. app.js boot() polls until this lands. -->
+<script type="module">
+try{ window.THREE=await import('https://unpkg.com/three@0.183.0/build/three.module.js'); }
+catch(e){ window.THREE=await import('https://cdn.jsdelivr.net/npm/three@0.183.0/build/three.module.js'); }
+</script>
+<script src="includes/js/data.js"></script>
+<script src="includes/js/moons.js"></script>
+<script src="includes/js/asteroids.js"></script>
+<script src="includes/js/defence.js"></script>
+<script src="includes/js/satellites.js"></script>
+<script src="includes/js/craters.js"></script>
+<script src="includes/js/app.js?v=15"></script>
+<script defer src="/track.js"></script>
+</body>
+</html>
