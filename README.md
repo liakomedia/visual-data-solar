@@ -1,5 +1,16 @@
 # Visual Data Solar — the Solar System, live, in real 3D
 
+[![Live](https://img.shields.io/badge/live-vdata.liako.eu%2Fsolar-000000?style=flat-square&logo=googlechrome&logoColor=white)](https://vdata.liako.eu/solar/)
+[![Licence: MIT (code)](https://img.shields.io/badge/licence-MIT_(code)-f4f4f4?style=flat-square)](LICENSE)
+[![Three.js r183](https://img.shields.io/badge/three.js-r183-049EF4?style=flat-square&logo=threedotjs&logoColor=white)](https://threejs.org)
+[![Ephemeris](https://img.shields.io/badge/ephemeris-live_JPL-e9c46a?style=flat-square)](DATA.md)
+[![Moons](https://img.shields.io/badge/moons-459-67e8f9?style=flat-square)](DATA.md)
+[![Asteroids](https://img.shields.io/badge/asteroid_orbits-18%2C000-d9c58f?style=flat-square)](DATA.md)
+[![Satellites](https://img.shields.io/badge/satellites-15%2C932-bfe9ff?style=flat-square)](DATA.md)
+
+![Visual Data Solar — time-lapse orbit](preview.gif)
+
+
 **Live: [vdata.liako.eu/solar](https://vdata.liako.eu/solar/)**
 
 An interactive 3D map of the Solar System **as it is right now**:
