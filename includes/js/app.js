@@ -606,13 +606,28 @@ function updateCrumbs(n){
 }
 function refreshLegendChips(){ _legendChips.forEach(c=>c.el.classList.toggle('off',!c.isOn())); }
 function mkToggle(el,html,isOn,onToggle){
-  const s=document.createElement('span'); s.className='lg tgl'+(isOn()?'':' off'); s.innerHTML=html; s.title='Click to show / hide';
-  s.onclick=()=>{ onToggle(); s.classList.toggle('off',!isOn()); };
-  el.appendChild(s); _legendChips.push({el:s,isOn}); return s;
+  const s=document.createElement('span'); s.className='lg tgl'+(isOn()?'':' off'); s.innerHTML=html;
+  s.title='Click to show / hide';
+  s.onclick=()=>{ onToggle(); s.classList.toggle('off', !isOn()); _syncLegendMaster(); };
+  el.appendChild(s); _legendChips.push({el:s,isOn,toggle:onToggle}); return s;
 }
 function applyTypeVisibility(){ NODES.forEach(n=>{ const o=n.__threeObj; if(o) o.visible=!hiddenTypes.has(n.type); }); }
+
+/* master tick box: one click selects / unselects every legend layer; shows a dash when mixed */
+function _syncLegendMaster(){ const cb=document.getElementById('legend-all'); if(!cb) return;
+  const on=_legendChips.filter(c=>c.isOn()).length;
+  cb.checked = on===_legendChips.length; cb.indeterminate = on>0 && on<_legendChips.length; }
+function _wireLegendMaster(el){
+  el.insertAdjacentHTML('afterbegin',
+    '<label class="lg" style="width:100%;cursor:pointer;user-select:none;margin-bottom:2px;color:#eaf0ff">'+
+    '<input type="checkbox" id="legend-all" checked style="accent-color:#67e8f9;margin:0 7px 0 0;cursor:pointer;vertical-align:-2px">select / unselect all</label>');
+  document.getElementById('legend-all').onchange=e=>{ const on=e.target.checked;
+    _legendChips.forEach(c=>{ if(c.toggle && c.isOn()!==on) c.toggle(); });
+    refreshLegendChips(); _syncLegendMaster();
+    if(typeof bFields!=='undefined' && bFields){ fieldsOn=on; bFields.classList.toggle('active',on); } };
+}
 function buildLegend(){
-  const el=document.getElementById('legend'); el.innerHTML='<b>OBJECT TYPES · click to hide / show</b>';
+  const el=document.getElementById('legend'); el.innerHTML='<b>OBJECT TYPES · click to hide / show</b>'; _wireLegendMaster(el);
   ['star','planet','moon','dwarf','belt','comet'].forEach(k=>{
     mkToggle(el,`<span class="sw" style="background:${TYPES[k].c}"></span>${TYPES[k].label}`,
       ()=>!hiddenTypes.has(k), ()=>{ hiddenTypes.has(k)?hiddenTypes.delete(k):hiddenTypes.add(k); applyTypeVisibility(); });
