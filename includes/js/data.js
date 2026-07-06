@@ -48,6 +48,8 @@ const DATA={name:"The Solar System",root:true,virtual:true,children:[
  "The most famous comet — recorded since 240 BC; next perihelion in 2061.")},
 {name:"Comet Hale–Bopp",type:"comet",diam:60,au:186,meta:P("C/1995 O1","~10¹⁶ kg","~60 km nucleus","0.9–371 au","~2,500 years","Hale & Bopp, 1995","the great comet of 1997",
  "Visible to the naked eye for a record 18 months.")},
+{name:"3I/ATLAS",type:"comet",diam:5,au:9.5,meta:P("C/2025 N1 (ATLAS)","—","~1–5 km nucleus","interstellar — hyperbolic (e ≈ 6), passing through","—","ATLAS survey (Chile), 1 July 2025","telescope only",
+ "The third interstellar visitor — perihelion just inside Mars's orbit in Oct 2025; in July 2026 it crosses Saturn's distance outbound, leaving the Solar System forever.")},
 {name:"'Oumuamua",type:"comet",diam:0.2,au:25,meta:P("1I/'Oumuamua","—","~100–200 m, cigar-shaped","interstellar — passed through in 2017","—","Pan-STARRS, 2017","was very faint",
  "The first confirmed visitor from another star system, tumbling through on a hyperbolic orbit.")},
 {name:"2I/Borisov",type:"comet",diam:1,au:30,meta:P("Comet Borisov","—","~1 km nucleus","interstellar — passed through in 2019","—","G. Borisov, 2019","telescope",

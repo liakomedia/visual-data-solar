@@ -15,6 +15,7 @@ reuse them, cite the sources below. Compiled by [Liako](https://liako.eu).
 | Fireballs (atmospheric impacts) | `includes/js/defence.js` | [CNEOS Fireballs](https://cneos.jpl.nasa.gov/fireballs/) | CNEOS |
 | Active satellites (15,932) | `includes/js/satellites.js` | [CelesTrak GP catalogue](https://celestrak.org) | Kelso, CelesTrak |
 | Confirmed impact structures (86) | `includes/js/craters.js` | [Earth Impact Database / Wikipedia](https://en.wikipedia.org/wiki/List_of_impact_structures_on_Earth) | PASSC Earth Impact Database |
+| 3I/ATLAS — third interstellar object | `includes/js/data.js` | [NASA Science](https://science.nasa.gov/solar-system/comets/3i-atlas/) · Minor Planet Center | discovered ATLAS survey, 1 July 2025 |
 | Planet positions (live, in-app) | computed in `includes/js/app.js` | [JPL Approximate Positions of the Planets](https://ssd.jpl.nasa.gov/planets/approx_pos.html) | Standish (JPL), Keplerian elements 1800–2050 |
 | Planetary data (masses, diameters, periods) | `includes/js/data.js` | [NASA NSSDCA Planetary Fact Sheets](https://nssdc.gsfc.nasa.gov/planetary/factsheet/) | NSSDCA |
 
