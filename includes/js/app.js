@@ -70,7 +70,7 @@ function planetNow(name){
     vec:{x:r*Math.cos(beta)*Math.cos(lam), y:r*Math.sin(beta), z:r*Math.cos(beta)*Math.sin(lam)}};
 }
 const AU0=Math.log10(0.35), AU1=Math.log10(60);
-const rOfAu=au=>8+(Math.log10(Math.max(0.36,Math.min(59,au)))-AU0)/(AU1-AU0)*56;   // 0.39au→~8 … 50au→~62
+const rOfAu=au=>8+(Math.log10(Math.max(0.36,Math.min(59,au)))-AU0)/(AU1-AU0)*64;   // 0.39au→~8 … 50au→~72 (wider so discs never overlap at conjunction)
 let jupLon=0;
 function layout(){
   ROOT._p={x:0,y:0,z:0};
@@ -450,7 +450,9 @@ function tickLabels(){
   if(_spinLast==null) _spinLast=simNow();
   const dSim=simNow()-_spinLast; _spinLast=simNow();
   if(dSim) _spinners.forEach(sp=>{ const h=ROT_H[sp._body]; if(!h) return;
-    sp.rotation.y=(sp.rotation.y + dSim/(h*3600000)*2*Math.PI) % (2*Math.PI); });
+    // minus so a body's spin matches its ORBITAL sense in the scene (position x=r·cosθ, z=r·sinθ
+    // makes prograde orbits turn one way; +rotation.y turns the other) — Sun & planets now agree.
+    sp.rotation.y=(sp.rotation.y - dSim/(h*3600000)*2*Math.PI) % (2*Math.PI); });
   const W2=elGraph.clientWidth, H2=elGraph.clientHeight, SMALL=window.innerWidth<640, MAX=SMALL?12:44;
   let cam; try{ cam=Graph.cameraPosition(); }catch(e){ return; }
   const cand=[];
