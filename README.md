@@ -29,7 +29,7 @@ An interactive 3D map of the Solar System **as it is right now**:
   real periods; 86 confirmed impact craters on Earth's surface
 - Every object's panel shows its live heliocentric position and light-time from Earth
 
-Every dataset is cited in the in-app **✦ References** panel and in [DATA.md](DATA.md).
+Every dataset is cited in the in-app **✦ References** panel and in [DATA.md](DATA.md). How each dataset is technically placed, sized and coloured — the rulers, the coordinate maths, and what is exact versus statistical — is documented in [METHODS.md](METHODS.md).
 
 ## Running locally
 
