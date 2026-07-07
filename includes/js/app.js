@@ -137,6 +137,11 @@ function tex(f){ if(!_texLoader) _texLoader=new THREE.TextureLoader();
   if(!_texCache[f]){ const t=_texLoader.load('includes/images/tex/'+f); if('colorSpace' in t) t.colorSpace='srgb'; _texCache[f]=t; }
   return _texCache[f]; }
 const _spinners=[];
+/* sidereal rotation period in hours; NEGATIVE = retrograde (clockwise seen from the north).
+   Prograde: Sun, Mercury, Earth, Mars, Jupiter, Saturn, Neptune. Retrograde: Venus, Uranus. */
+const ROT_H={'The Sun':609.12, Mercury:1407.6, Venus:-5832.5, Earth:23.9345, Mars:24.6229,
+  Jupiter:9.925, Saturn:10.656, Uranus:-17.24, Neptune:16.11, Moon:655.72, Pluto:-153.3};
+let _spinLast=null;
 function nodeMesh(n){
   const region=!!n.region, col=nodeColor(n);
   const texFile=TEXMAP[n.name];
@@ -144,7 +149,7 @@ function nodeMesh(n){
     const g=new THREE.Group();
     const geo=new THREE.SphereGeometry(1,40,28);
     const mat=new THREE.MeshBasicMaterial({map:tex(texFile)});   // unlit: full-brightness imagery (cross-THREE lighting is unreliable)
-    const sph=new THREE.Mesh(geo,mat); g.add(sph); _spinners.push(sph);
+    const sph=new THREE.Mesh(geo,mat); sph._body=n.name; g.add(sph); _spinners.push(sph);
     if(n.name==='Saturn'){                        // the rings, with real ring imagery
       const rg=new THREE.RingGeometry(1.35,2.35,72); const uv=rg.attributes.uv, ps=rg.attributes.position;
       for(let i=0;i<uv.count;i++){ const r=Math.hypot(ps.getX(i),ps.getY(i)); uv.setXY(i,(r-1.35)/1.0,0.5); }
@@ -440,7 +445,12 @@ function tickLabels(){
   requestAnimationFrame(tickLabels);
   if(!Graph||!Graph.graph2ScreenCoords) return;
   liveTick(performance.now());   // real-time ephemeris — planets keep moving as the clock runs
-  _spinners.forEach(sp=>sp.rotation.y+=0.0016);   // gentle planet rotation
+  // spin each body at its true sidereal rate & direction, driven by the sim-clock so it
+  // scales with the ⏱ time-lapse (retrograde for Venus & Uranus, prograde for the rest)
+  if(_spinLast==null) _spinLast=simNow();
+  const dSim=simNow()-_spinLast; _spinLast=simNow();
+  if(dSim) _spinners.forEach(sp=>{ const h=ROT_H[sp._body]; if(!h) return;
+    sp.rotation.y=(sp.rotation.y + dSim/(h*3600000)*2*Math.PI) % (2*Math.PI); });
   const W2=elGraph.clientWidth, H2=elGraph.clientHeight, SMALL=window.innerWidth<640, MAX=SMALL?12:44;
   let cam; try{ cam=Graph.cameraPosition(); }catch(e){ return; }
   const cand=[];
